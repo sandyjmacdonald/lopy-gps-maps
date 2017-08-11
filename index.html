@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LoPy GPS Maps</title>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <style type="text/css">
+            html { height: 100% }
+            body { height: 100%; margin: 0; padding: 0 }
+            #map { height: 100% }
+        </style>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOURKEYHERE&sensor=false"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            var map, marker, last_latlng;
+            function init() {
+                var latlng = new google.maps.LatLng(0, 0);
+                var mapOptions = { center: latlng, zoom: 18, mapTypeId: google.maps.MapTypeId.TERRAIN, disableDefaultUI: true};
+                map = new google.maps.Map(document.getElementById("map"), mapOptions);
+                marker = new google.maps.Marker({ position: latlng, map: map, title: "Updating...", icon: 'assets/moustache.gif' });
+            }
+            google.maps.event.addDomListener(window, 'load', init);
+            function draw_flight_path(latlng) {
+                if(last_latlng == undefined) {
+                    last_latlng = latlng;
+                }
+                flight_path = new google.maps.Polyline({
+                    path: [last_latlng, latlng],
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2
+                });
+                last_latlng = latlng;
+                flight_path.setMap(map);
+            };
+            function get_latest_position() {
+                $.getJSON('http://your.ip.address.here/position.json', function(data, status) {
+                    position = data.position;
+                    var latlng = new google.maps.LatLng(position.latitude, position.longitude);
+                    map.setCenter(latlng);
+                    marker.setPosition(latlng);
+                    draw_flight_path(latlng);
+                });
+            };
+            setInterval(get_latest_position, 1000);
+        </script>
+    </head>
+    <body>
+        <div id="map"/>
+    </body>
+</html>
