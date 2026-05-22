@@ -1,3 +1,12 @@
+> [!IMPORTANT]
+> **This repository has moved to Codeberg.**
+>
+> Active development now happens at **[https://codeberg.org/sandyjmacdonald/lopy-gps-maps](https://codeberg.org/sandyjmacdonald/lopy-gps-maps)**.
+>
+> This GitHub copy is archived and read-only. Please file issues, open pull requests, and follow the project on Codeberg.
+
+---
+
 # lopy-gps-maps
 
 _Proof of concept code for live tracking on Google Maps with GPS over LoRa._
